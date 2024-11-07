@@ -1,0 +1,53 @@
+Task:- Task: Deploy application in monolithic and microservices architecture.
+❖ Description: For monolithic : 1 EC2 instance, deploy wordpress and MYSQL on the same
+instances.
+For microservices: 2 EC2 instances, 1 for wordpress and 1 for MYSQL.
+Configure the necessary security group for the instances.
+EC2 instance type: t2-micro, AMI: ubuntu-*.
+Create a welcome page in wordpress that will be the homepage.
+
+-> Here’s how I completed the task of deploying WordPress in both **monolithic** and **microservices** architectures on AWS EC2 instances.
+
+## Monolithic Architecture
+
+In the monolithic setup, WordPress and MySQL will run on the same EC2 instance.
+
+### Steps:
+1. **Launch an EC2 Instance**:
+   - Go to the AWS EC2 Dashboard, choose an Ubuntu AMI, select the `t2.micro` instance type, and name it something like `monolithic-wordpress`.
+   - Create a security group to allow HTTP (port 80) for web access, MySQL (port 3306) from the instance itself, and SSH (port 22) from your IP.
+
+2. **Install Required Software**:
+   - SSH into the instance, update packages, and install Apache for web server, MySQL for the database and PHP.
+
+3. **Set Up MySQL**:
+   - Start MySQL, create a database named `wordpress`, and set up a user with access to this database.
+
+4. **Install WordPress**:
+   - Download WordPress, move it to the web root directory (`/var/www/html/wordpress`), and configure it to connect to MySQL (using `localhost` as the database host).
+
+5. **Finish Setup and Create Welcome Page**:
+   - Access `http://<Instance_Public_IP>/wordpress` in a browser to complete the WordPress setup, then log in to the dashboard, create a Welcome Page, and set it as the homepage.
+
+
+## Microservices Architecture
+
+For the microservices setup, WordPress and MySQL will run on separate EC2 instances.
+
+### Steps:
+1. **Launch EC2 Instances**:
+   - Start two instances:
+     - One for **MySQL** with a security group that allows inbound MySQL connections (port 3306) from the WordPress instance's private IP.
+     - One for **WordPress** with a security group that allows HTTP (port 80) for public web access and SSH (port 22) from your IP.
+
+2. **Install MySQL on the MySQL Instance**:
+   - SSH into the MySQL instance, install MySQL, and configure it to accept remote connections. Create a `wordpress` database and a user for the WordPress instance to connect.
+
+3. **Install WordPress on the WordPress Instance**:
+   - SSH into the WordPress instance, install Apache and PHP, download WordPress, and configure it to connect to the MySQL instance by using the MySQL instance’s private IP.
+
+4. **Finish Setup and Create Welcome Page**:
+   - Go to `http://<WordPress_Instance_Public_IP>/wordpress` in a browser, complete the WordPress setup, create a Welcome Page, and set it as the homepage.
+
+
+
